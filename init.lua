@@ -1,4 +1,4 @@
-vim.opt.winborder = "rounded"
+vim.opt.winborder = "single"
 vim.opt.listchars = {
   tab = "▸ ",
   trail = "·",
@@ -25,7 +25,7 @@ local filetype_settings = {
   svelte = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   python = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
   lua = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
-  go = { expandtab = false, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
+  go = { expandtab = false, shiftwidth = 4, tabstop = 4, softtabstop = 0 },
   c = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   cpp = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   rust = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
@@ -39,26 +39,20 @@ local filetype_settings = {
   make = { expandtab = false, shiftwidth = 4, tabstop = 4, softtabstop = 0 },
 }
 
--- Function to apply indentation settings
-local function set_indent_settings(settings)
-  for option, value in pairs(settings) do
-    vim.opt_local[option] = value
-  end
-end
-
--- Create autocommands for each filetype
 for filetype, settings in pairs(filetype_settings) do
   vim.api.nvim_create_autocmd("FileType", {
     group = indent_group,
     pattern = filetype,
     callback = function()
-      set_indent_settings(settings)
+      vim.bo.expandtab = settings.expandtab
+      vim.bo.shiftwidth = settings.shiftwidth
+      vim.bo.tabstop = settings.tabstop
+      vim.bo.softtabstop = settings.softtabstop
     end,
-    desc = string.format("Set indentation for %s files", filetype)
   })
 end
 
-vim.o.clipboard="unnamedplus"
+vim.o.clipboard = "unnamedplus"
 vim.o.signcolumn = "yes"
 vim.o.number = true
 vim.o.relativenumber = true
@@ -77,6 +71,8 @@ vim.o.incsearch = true
 
 vim.keymap.set("i", "jk", "<esc>", { silent = true })
 vim.keymap.set("i", "kj", "<esc>", { silent = true })
+vim.keymap.set("n", "<esc>", "<cmd>nohlsearch<cr>", { silent = true })
+vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { silent = true })
 
 vim.pack.add({
   { src = "https://github.com/stevearc/oil.nvim" },
@@ -86,8 +82,8 @@ vim.pack.add({
   { src = "https://github.com/hrsh7th/cmp-path" },
   { src = "https://github.com/hrsh7th/cmp-cmdline" },
   { src = "https://github.com/hrsh7th/nvim-cmp" },
-  { src = "https://github.com/tpope/vim-fugitive" },
 
+  { src = "https://github.com/tpope/vim-fugitive" },
 })
 
 local oil = require("oil")
@@ -136,3 +132,17 @@ vim.keymap.set("n", "gca", vim.lsp.buf.code_action, { silent = true })
 vim.keymap.set("n", "gcl", vim.lsp.codelens.run, { silent = true })
 vim.keymap.set("n", "gL", vim.lsp.codelens.refresh, { silent = true })
 vim.keymap.set("n", "g=", vim.lsp.buf.format, { silent = true })
+
+vim.lsp.config['lua_ls'] = {
+  cmd = { '/home/soul/.git-repos/lua-language-server/bin/lua-language-server' },
+  filetypes = { 'lua' },
+  root_markers = { '.luarc.json', '.luarc.jsonc', '.git' },
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+      }
+    }
+  }
+}
+vim.lsp.enable("lua_ls")
