@@ -1,4 +1,5 @@
 vim.opt.winborder = "single"
+
 vim.opt.listchars = {
   tab = "▸ ",
   trail = "·",
@@ -48,6 +49,7 @@ for filetype, settings in pairs(filetype_settings) do
       vim.bo.shiftwidth = settings.shiftwidth
       vim.bo.tabstop = settings.tabstop
       vim.bo.softtabstop = settings.softtabstop
+      vim.notify("[INDENT] " .. filetype .. " sw=" .. settings.shiftwidth, vim.log.levels.WARN)
     end,
   })
 end
@@ -133,7 +135,7 @@ vim.keymap.set("n", "gcl", vim.lsp.codelens.run, { silent = true })
 vim.keymap.set("n", "gL", vim.lsp.codelens.refresh, { silent = true })
 vim.keymap.set("n", "g=", vim.lsp.buf.format, { silent = true })
 
-vim.lsp.config['lua_ls'] = {
+vim.lsp.config["lua_ls"] = {
   cmd = { '/home/soul/.git-repos/lua-language-server/bin/lua-language-server' },
   filetypes = { 'lua' },
   root_markers = { '.luarc.json', '.luarc.jsonc', '.git' },
@@ -145,4 +147,22 @@ vim.lsp.config['lua_ls'] = {
     }
   }
 }
-vim.lsp.enable("lua_ls")
+
+-- Not enabled by default
+vim.g.lsp_enabled = false
+
+vim.keymap.set("n", "<leader>l", function()
+  if vim.g.lsp_enabled then
+    vim.lsp.enable("lua_ls", false)
+    for _, client in ipairs(vim.lsp.get_clients()) do
+      client:stop()
+    end
+    vim.g.lsp_enabled = false
+    vim.notify("[LSP] disabled", vim.log.levels.WARN)
+  else
+    vim.lsp.enable("lua_ls", true)
+    vim.cmd("edit")
+    vim.g.lsp_enabled = true
+    vim.notify("[LSP] enabled", vim.log.levels.WARN)
+  end
+end, { silent = true })
