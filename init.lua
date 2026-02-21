@@ -1,0 +1,138 @@
+vim.opt.winborder = "rounded"
+vim.opt.listchars = {
+  tab = "▸ ",
+  trail = "·",
+  extends = "›",
+  precedes = "‹",
+  nbsp = "␣",
+}
+
+local indent_group = vim.api.nvim_create_augroup(
+  "FileTypeIndent",
+  { clear = true }
+)
+
+local filetype_settings = {
+  javascript = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  typescript = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  typescriptreact = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  html = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  css = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  scss = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  json = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  yaml = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  vue = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  svelte = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  python = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
+  lua = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  go = { expandtab = false, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
+  c = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  cpp = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  rust = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
+  java = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  sh = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  bash = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  zsh = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  ruby = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  php = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
+  markdown = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
+  make = { expandtab = false, shiftwidth = 4, tabstop = 4, softtabstop = 0 },
+}
+
+-- Function to apply indentation settings
+local function set_indent_settings(settings)
+  for option, value in pairs(settings) do
+    vim.opt_local[option] = value
+  end
+end
+
+-- Create autocommands for each filetype
+for filetype, settings in pairs(filetype_settings) do
+  vim.api.nvim_create_autocmd("FileType", {
+    group = indent_group,
+    pattern = filetype,
+    callback = function()
+      set_indent_settings(settings)
+    end,
+    desc = string.format("Set indentation for %s files", filetype)
+  })
+end
+
+vim.o.clipboard="unnamedplus"
+vim.o.signcolumn = "yes"
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.wrap = false
+vim.o.swapfile = false
+vim.g.mapleader = " "
+vim.o.clipboard = "unnamedplus"
+vim.o.backup = false
+vim.o.writebackup = false
+vim.o.undofile = true
+vim.o.hidden = true
+vim.o.list = true
+vim.o.colorcolumn = "80"
+vim.o.expandtab = true
+vim.o.incsearch = true
+
+vim.keymap.set("i", "jk", "<esc>", { silent = true })
+vim.keymap.set("i", "kj", "<esc>", { silent = true })
+
+vim.pack.add({
+  { src = "https://github.com/stevearc/oil.nvim" },
+
+  { src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
+  { src = "https://github.com/hrsh7th/cmp-buffer" },
+  { src = "https://github.com/hrsh7th/cmp-path" },
+  { src = "https://github.com/hrsh7th/cmp-cmdline" },
+  { src = "https://github.com/hrsh7th/nvim-cmp" },
+  { src = "https://github.com/tpope/vim-fugitive" },
+
+})
+
+local oil = require("oil")
+oil.setup({
+  default_file_explorer = true,
+  view_options = {
+    show_hidden = true
+  }
+})
+vim.keymap.set("n", "<leader>o", "<cmd>Oil<cr>")
+
+local cmp = require("cmp")
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.snippet.expand(args.body)
+    end
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered()
+  },
+  mapping = cmp.mapping.preset.insert({
+    ["<C-space"] = cmp.mapping.complete(),
+    ["<C-e>"] = cmp.mapping.abort(),
+    ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+    ["<C-j>"] = cmp.mapping.scroll_docs(4),
+    ["<C-k>"] = cmp.mapping.scroll_docs(-4),
+  }),
+  sources = cmp.config.sources({
+    { name = "buffer" },
+    { name = "nvim_lsp" },
+    { name = "path" },
+  })
+}, {
+  { name = "buffer" }
+})
+
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { silent = true })
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { silent = true })
+vim.keymap.set("n", "gr", vim.lsp.buf.references, { silent = true })
+vim.keymap.set("n", "gh", vim.lsp.buf.hover, { silent = true })
+vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { silent = true })
+vim.keymap.set("n", "gR", vim.lsp.buf.rename, { silent = true })
+vim.keymap.set("n", "gca", vim.lsp.buf.code_action, { silent = true })
+vim.keymap.set("n", "gcl", vim.lsp.codelens.run, { silent = true })
+vim.keymap.set("n", "gL", vim.lsp.codelens.refresh, { silent = true })
+vim.keymap.set("n", "g=", vim.lsp.buf.format, { silent = true })
