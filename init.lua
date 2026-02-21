@@ -1,3 +1,11 @@
+vim.cmd [[
+  highlight Normal guibg=NONE ctermbg=NONE
+  highlight NonText guibg=NONE ctermbg=NONE
+  highlight SignColumn guibg=NONE ctermbg=NONE
+  highlight NormalFloat guibg=NONE ctermbg=NONE
+  highlight FloatBorder guibg=NONE ctermbg=NONE
+]]
+
 vim.opt.winborder = "single"
 
 vim.opt.listchars = {
@@ -49,7 +57,6 @@ for filetype, settings in pairs(filetype_settings) do
       vim.bo.shiftwidth = settings.shiftwidth
       vim.bo.tabstop = settings.tabstop
       vim.bo.softtabstop = settings.softtabstop
-      vim.notify("[INDENT] " .. filetype .. " sw=" .. settings.shiftwidth, vim.log.levels.WARN)
     end,
   })
 end
@@ -77,6 +84,7 @@ vim.keymap.set("n", "<esc>", "<cmd>nohlsearch<cr>", { silent = true })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { silent = true })
 
 vim.pack.add({
+  { src = "https://github.com/vague2k/vague.nvim" },
   { src = "https://github.com/stevearc/oil.nvim" },
   { src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
   { src = "https://github.com/hrsh7th/cmp-buffer" },
@@ -87,6 +95,11 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.nvim" },
   { src = "https://github.com/cbochs/grapple.nvim" },
 })
+
+require("vague").setup({
+  transparent = true,
+})
+vim.cmd("colorscheme vague")
 
 local oil = require("oil")
 oil.setup({
@@ -148,6 +161,12 @@ vim.lsp.config["lua_ls"] = {
   }
 }
 
+vim.lsp.config["gopls"] = {
+  cmd = { 'gopls' },
+  filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+  root_markers = { 'go.mod', 'go.work', '.git' },
+}
+
 local servers = {
   "lua_ls",
   "gopls"
@@ -200,7 +219,6 @@ grapple.setup({
   icons = false
 })
 
-vim.keymap.set("n", "<leader>g", "<cmd>Grapple tag<cr>", { silent = true })
-vim.keymap.set("n", "<leader>G", "<cmd>Grapple toggle_tags<cr>", { silent = true })
+vim.keymap.set("n", "<leader>g", "<cmd>Grapple tag<cr>", { silent = true }) vim.keymap.set("n", "<leader>G", "<cmd>Grapple toggle_tags<cr>", { silent = true })
 vim.keymap.set("n", "H", "<cmd>Grapple cycle_tags prev<cr>", { silent = true })
 vim.keymap.set("n", "L", "<cmd>Grapple cycle_tags next<cr>", { silent = true })
