@@ -78,14 +78,14 @@ vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { silent = true })
 
 vim.pack.add({
   { src = "https://github.com/stevearc/oil.nvim" },
-
   { src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
   { src = "https://github.com/hrsh7th/cmp-buffer" },
   { src = "https://github.com/hrsh7th/cmp-path" },
   { src = "https://github.com/hrsh7th/cmp-cmdline" },
   { src = "https://github.com/hrsh7th/nvim-cmp" },
-
   { src = "https://github.com/tpope/vim-fugitive" },
+  { src = "https://github.com/echasnovski/mini.nvim" },
+  { src = "https://github.com/cbochs/grapple.nvim" },
 })
 
 local oil = require("oil")
@@ -148,21 +148,59 @@ vim.lsp.config["lua_ls"] = {
   }
 }
 
--- Not enabled by default
+local servers = {
+  "lua_ls",
+  "gopls"
+}
+
+---@type boolean
 vim.g.lsp_enabled = false
 
 vim.keymap.set("n", "<leader>l", function()
+  vim.g.lsp_enabled = not vim.g.lsp_enabled
   if vim.g.lsp_enabled then
-    vim.lsp.enable("lua_ls", false)
+    for _, server in ipairs(servers) do
+      vim.lsp.enable(server, true)
+    end
+    vim.cmd("edit")
+    vim.notify("[LSP] enabled", vim.log.levels.WARN)
+  else
+    for _, server in ipairs(servers) do
+      vim.lsp.enable(server, false)
+    end
     for _, client in ipairs(vim.lsp.get_clients()) do
       client:stop()
     end
-    vim.g.lsp_enabled = false
     vim.notify("[LSP] disabled", vim.log.levels.WARN)
-  else
-    vim.lsp.enable("lua_ls", true)
-    vim.cmd("edit")
-    vim.g.lsp_enabled = true
-    vim.notify("[LSP] enabled", vim.log.levels.WARN)
   end
-end, { silent = true })
+end)
+
+local mini_pairs = require("mini.pairs")
+mini_pairs.setup()
+
+local mini_pick = require("mini.pick")
+mini_pick.setup()
+
+local mini_extra = require("mini.extra")
+mini_extra.setup()
+
+local mini_statusline = require("mini.statusline")
+mini_statusline.setup()
+
+local mini_comment = require("mini.comment")
+mini_comment.setup()
+
+vim.keymap.set("n", "<leader>sf", "<cmd>Pick files tool='git'<cr>", { silent = true })
+vim.keymap.set("n", "<leader>sg", "<cmd>Pick grep_live<cr>", { silent = true })
+vim.keymap.set("n", "<leader>sb", "<cmd>Pick buffers<cr>", { silent = true })
+vim.keymap.set("n", "<leader>sd", "<cmd>Pick diagnostic<cr>", { silent = true })
+
+local grapple = require("grapple")
+grapple.setup({
+  icons = false
+})
+
+vim.keymap.set("n", "<leader>g", "<cmd>Grapple tag<cr>", { silent = true })
+vim.keymap.set("n", "<leader>G", "<cmd>Grapple toggle_tags<cr>", { silent = true })
+vim.keymap.set("n", "H", "<cmd>Grapple cycle_tags prev<cr>", { silent = true })
+vim.keymap.set("n", "L", "<cmd>Grapple cycle_tags next<cr>", { silent = true })
