@@ -167,9 +167,35 @@ vim.lsp.config["gopls"] = {
   root_markers = { 'go.mod', 'go.work', '.git' },
 }
 
+vim.lsp.config["tsgo"] = {
+  cmd = { "tsgo", "--lsp", "--stdio" },
+  filetypes = {
+    'javascript',
+    'javascriptreact',
+    'javascript.jsx',
+    'typescript',
+    'typescriptreact',
+    'typescript.tsx',
+  },
+  root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
+  settings = {
+    typescript = {
+      inlayHints = {
+        parameterNames = { enabled = "literals" },
+        parameterTypes = { enabled = true },
+        variableTypes = { enabled = true },
+        propertyDeclarationTypes = { enabled = true },
+        functionLikeReturnTypes = { enabled = true },
+        enumMemberValues = { enabled = true },
+      }
+    }
+  }
+}
+
 local servers = {
   "lua_ls",
-  "gopls"
+  "gopls",
+  "tsgo"
 }
 
 ---@type boolean
@@ -222,3 +248,4 @@ grapple.setup({
 vim.keymap.set("n", "<leader>g", "<cmd>Grapple tag<cr>", { silent = true }) vim.keymap.set("n", "<leader>G", "<cmd>Grapple toggle_tags<cr>", { silent = true })
 vim.keymap.set("n", "H", "<cmd>Grapple cycle_tags prev<cr>", { silent = true })
 vim.keymap.set("n", "L", "<cmd>Grapple cycle_tags next<cr>", { silent = true })
+

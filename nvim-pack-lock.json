@@ -21,7 +21,7 @@
       "src": "https://github.com/cbochs/grapple.nvim"
     },
     "mini.nvim": {
-      "rev": "dbb073bd2ed4a7bb35daafc7989567f0ff1426ee",
+      "rev": "0098de999048af0539183d625c52d733318a441b",
       "src": "https://github.com/echasnovski/mini.nvim"
     },
     "nvim-cmp": {
@@ -29,7 +29,7 @@
       "src": "https://github.com/hrsh7th/nvim-cmp"
     },
     "oil.nvim": {
-      "rev": "f55b25e493a7df76371cfadd0ded5004cb9cd48a",
+      "rev": "0fcc83805ad11cf714a949c98c605ed717e0b83e",
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "vague.nvim": {
