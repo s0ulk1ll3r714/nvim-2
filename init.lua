@@ -1,3 +1,54 @@
+---@diagnostic disable-next-line: param-type-mismatch
+vim.api.nvim_create_autocmd("VimResized", {
+  pattern = "*",
+  callback = function()
+    vim.cmd("wincmd =")
+  end,
+})
+
+vim.keymap.set(
+  "t",
+  "<Esc><Esc>",
+  "<C-\\><C-n>",
+  { desc = "Exit terminal mode" }
+)
+
+vim.keymap.set(
+  "n",
+  "<C-h>",
+  "<C-w><C-h>",
+  { desc = "Move focus to the left window" }
+)
+vim.keymap.set(
+  "n",
+  "<C-l>",
+  "<C-w><C-l>",
+  { desc = "Move focus to the right window" }
+)
+vim.keymap.set(
+  "n",
+  "<C-j>",
+  "<C-w><C-j>",
+  { desc = "Move focus to the lower window" }
+)
+vim.keymap.set(
+  "n",
+  "<C-k>",
+  "<C-w><C-k>",
+  { desc = "Move focus to the upper window" }
+)
+
+local toggle_wrap = function()
+  vim.wo.wrap = not vim.wo.wrap
+  if vim.wo.wrap then
+    vim.notify("[toggle_wrap] word wrap enabled", vim.log.levels.WARN)
+  else
+    vim.notify("[toggle_wrap] word wrap disabled", vim.log.levels.WARN)
+  end
+end
+
+vim.keymap.set("n", "<leader>w", toggle_wrap)
+
 vim.cmd [[
   highlight Normal guibg=NONE ctermbg=NONE
   highlight NonText guibg=NONE ctermbg=NONE
