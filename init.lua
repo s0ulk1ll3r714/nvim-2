@@ -1,5 +1,3 @@
-local need_tailwind = false
-
 ---@diagnostic disable-next-line: param-type-mismatch
 vim.api.nvim_create_autocmd("VimResized", {
   pattern = "*",
@@ -40,17 +38,6 @@ vim.keymap.set(
   { desc = "Move focus to the upper window" }
 )
 
-local toggle_wrap = function()
-  vim.wo.wrap = not vim.wo.wrap
-  if vim.wo.wrap then
-    vim.notify("[toggle_wrap] word wrap enabled", vim.log.levels.WARN)
-  else
-    vim.notify("[toggle_wrap] word wrap disabled", vim.log.levels.WARN)
-  end
-end
-
-vim.keymap.set("n", "<leader>w", toggle_wrap)
-
 vim.cmd [[
   highlight Normal guibg=NONE ctermbg=NONE
   highlight NonText guibg=NONE ctermbg=NONE
@@ -58,8 +45,6 @@ vim.cmd [[
   highlight NormalFloat guibg=NONE ctermbg=NONE
   highlight FloatBorder guibg=NONE ctermbg=NONE
 ]]
-
-vim.opt.winborder = "single"
 
 vim.opt.listchars = {
   tab = "▸ ",
@@ -114,13 +99,13 @@ for filetype, settings in pairs(filetype_settings) do
   })
 end
 
-vim.o.clipboard = "unnamedplus"
 vim.o.signcolumn = "yes"
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.wrap = false
 vim.o.swapfile = false
 vim.g.mapleader = " "
+vim.g.localleader = " "
 vim.o.clipboard = "unnamedplus"
 vim.o.backup = false
 vim.o.writebackup = false
@@ -172,7 +157,6 @@ vim.keymap.set("n", "g=", vim.lsp.buf.format, { silent = true })
 local servers = {
   "lua_ls",
   "gopls",
-  "denols"
 }
 
 vim.lsp.config["lua_ls"] = {
@@ -192,89 +176,6 @@ vim.lsp.config["gopls"] = {
   cmd = { 'gopls' },
   filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
   root_markers = { 'go.mod', 'go.work', '.git' },
-}
-
-if need_tailwind then
-  table.insert(servers, "tailwindcss")
-  vim.lsp.config["tailwindcss"] = {
-    cmd = { "tailwindcss-language-server", "--stdio" },
-    filetypes = {
-      "javascript",
-      "javascriptreact",
-      "typescript",
-      "typescriptreact",
-      "html",
-      "css",
-      "svelte",
-      "vue",
-    },
-    root_markers = {
-      "tailwind.config.js",
-      "tailwind.config.ts",
-      "postcss.config.js",
-      "postcss.config.ts",
-      "package.json",
-      ".git",
-    },
-    settings = {
-      tailwindCSS = {
-        includeLanguages = {
-          javascript = "javascript",
-          javascriptreact = "javascriptreact",
-          typescript = "typescript",
-          typescriptreact = "typescriptreact",
-        },
-        experimental = {
-          classRegex = {
-            { "tw`([^`]*)", "'([^']*)'" },
-          }
-        }
-      }
-    }
-  }
-end
-
-vim.lsp.config["denols"] = {
-  cmd = { "deno", "lsp" },
-  filetypes = {
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-  },
-  root_markers = {
-    "deno.json",
-    "deno.jsonc",
-    "deps.ts",
-    "mod.ts",
-    "import_map.json",
-  },
-  init_options = {
-    enable = true,
-    lint = true,
-    unstable = false,
-  },
-  settings = {
-    deno = {
-      enable = true,
-      lint = true,
-      unstable = false,
-      codeLens = {
-        implementations = true,
-        references = true,
-        referencesAllFunctions = true,
-        test = true,
-      },
-      suggest = {
-        imports = {
-          hosts = {
-            ["https://deno.land"] = true,
-          },
-        },
-      },
-    },
-  },
-  single_file_support = true,
 }
 
 ---@type boolean
@@ -316,6 +217,9 @@ mini_comment.setup()
 
 local mini_completion = require("mini.completion")
 mini_completion.setup()
+
+local mini_starter = require("mini.starter")
+mini_starter.setup()
 
 vim.keymap.set("n", "<leader>sf", "<cmd>Pick files tool='git'<cr>", { silent = true })
 vim.keymap.set("n", "<leader>sg", "<cmd>Pick grep_live<cr>", { silent = true })
