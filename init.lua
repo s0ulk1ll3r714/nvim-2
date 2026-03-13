@@ -158,16 +158,6 @@ oil.setup({
 })
 vim.keymap.set("n", "<leader>o", "<cmd>Oil<cr>")
 
-vim.api.nvim_create_autocmd('LspAttach', {
-  callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client and client:supports_method('textDocument/completion') then
-      vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = false })
-    end
-  end,
-})
-vim.cmd("set completeopt+=noselect")
-
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { silent = true })
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { silent = true })
 vim.keymap.set("n", "gr", vim.lsp.buf.references, { silent = true })
@@ -323,6 +313,9 @@ mini_statusline.setup()
 
 local mini_comment = require("mini.comment")
 mini_comment.setup()
+
+local mini_completion = require("mini.completion")
+mini_completion.setup()
 
 vim.keymap.set("n", "<leader>sf", "<cmd>Pick files tool='git'<cr>", { silent = true })
 vim.keymap.set("n", "<leader>sg", "<cmd>Pick grep_live<cr>", { silent = true })
