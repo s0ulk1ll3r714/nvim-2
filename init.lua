@@ -157,6 +157,7 @@ vim.keymap.set("n", "g=", vim.lsp.buf.format, { silent = true })
 local servers = {
   "lua_ls",
   "gopls",
+  "rust_analyzer"
 }
 
 vim.lsp.config["lua_ls"] = {
@@ -176,6 +177,20 @@ vim.lsp.config["gopls"] = {
   cmd = { 'gopls' },
   filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
   root_markers = { 'go.mod', 'go.work', '.git' },
+}
+
+vim.lsp.config["rust_analyzer"] = {
+  cmd = { "rust-analyzer" },
+  filetypes = { "rust" },
+  root_markers = { "Cargo.toml", ".git" },
+  settings = {
+    ["rust-analyzer"] = {
+      checkOnSave = true,
+      inlayHints = {
+        enable = true,
+      },
+    },
+  },
 }
 
 ---@type boolean
@@ -235,3 +250,12 @@ vim.keymap.set("n", "<leader>g", "<cmd>Grapple tag<cr>", { silent = true })
 vim.keymap.set("n", "<leader>G", "<cmd>Grapple toggle_tags<cr>", { silent = true })
 vim.keymap.set("n", "H", "<cmd>Grapple cycle_tags prev<cr>", { silent = true })
 vim.keymap.set("n", "L", "<cmd>Grapple cycle_tags next<cr>", { silent = true })
+
+-- Inlay hints
+vim.keymap.set("n", "<leader>ih", function()
+  vim.notify("[inlay hints] toggle", vim.log.levels.WARN)
+  vim.lsp.inlay_hint.enable(
+    not vim.lsp.inlay_hint.is_enabled({ 0 }),
+    { 0 }
+  )
+end)
