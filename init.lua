@@ -158,7 +158,8 @@ local servers = {
   "lua_ls",
   "gopls",
   "rust_analyzer",
-  "ts_ls"
+  "ts_ls",
+  "tailwindcss"
 }
 
 vim.lsp.config["lua_ls"] = {
@@ -198,6 +199,12 @@ vim.lsp.config["ts_ls"] = {
   cmd = { "typescript-language-server", "--stdio" },
   filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
   root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
+}
+
+vim.lsp.config["tailwindcss"] = {
+  cmd = { "tailwindcss-language-server", "--stdio" },
+  filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
+  root_markers = { "tailwind.config.js", "tailwind.config.ts", "tailwind.config.cjs", "tailwind.config.mjs", ".git" },
 }
 
 ---@type boolean
