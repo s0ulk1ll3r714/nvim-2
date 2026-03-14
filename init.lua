@@ -250,12 +250,3 @@ vim.keymap.set("n", "<leader>g", "<cmd>Grapple tag<cr>", { silent = true })
 vim.keymap.set("n", "<leader>G", "<cmd>Grapple toggle_tags<cr>", { silent = true })
 vim.keymap.set("n", "H", "<cmd>Grapple cycle_tags prev<cr>", { silent = true })
 vim.keymap.set("n", "L", "<cmd>Grapple cycle_tags next<cr>", { silent = true })
-
--- Inlay hints
-vim.keymap.set("n", "<leader>ih", function()
-  vim.notify("[inlay hints] toggle", vim.log.levels.WARN)
-  vim.lsp.inlay_hint.enable(
-    not vim.lsp.inlay_hint.is_enabled({ 0 }),
-    { 0 }
-  )
-end)
