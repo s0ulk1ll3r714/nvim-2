@@ -157,7 +157,8 @@ vim.keymap.set("n", "g=", vim.lsp.buf.format, { silent = true })
 local servers = {
   "lua_ls",
   "gopls",
-  "rust_analyzer"
+  "rust_analyzer",
+  "ts_ls"
 }
 
 vim.lsp.config["lua_ls"] = {
@@ -191,6 +192,12 @@ vim.lsp.config["rust_analyzer"] = {
       },
     },
   },
+}
+
+vim.lsp.config["ts_ls"] = {
+  cmd = { "typescript-language-server", "--stdio" },
+  filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+  root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
 }
 
 ---@type boolean
