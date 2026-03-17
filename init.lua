@@ -1,3 +1,5 @@
+vim.o.winborder = "single"
+
 ---@diagnostic disable-next-line: param-type-mismatch
 vim.api.nvim_create_autocmd("VimResized", {
   pattern = "*",
