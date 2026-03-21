@@ -255,9 +255,6 @@ mini_comment.setup()
 local mini_completion = require("mini.completion")
 mini_completion.setup()
 
-local mini_files = require("mini.files")
-mini_files.setup()
-
 vim.keymap.set("n", "<leader>ff", "<cmd>:lua MiniFiles.open()<cr>", { silent = true })
 
 vim.keymap.set("n", "<leader>sf", "<cmd>Pick files tool='git'<cr>", { silent = true })
@@ -274,3 +271,43 @@ vim.keymap.set("n", "<leader>g", "<cmd>Grapple tag<cr>", { silent = true })
 vim.keymap.set("n", "<leader>G", "<cmd>Grapple toggle_tags<cr>", { silent = true })
 vim.keymap.set("n", "H", "<cmd>Grapple cycle_tags prev<cr>", { silent = true })
 vim.keymap.set("n", "L", "<cmd>Grapple cycle_tags next<cr>", { silent = true })
+
+-- Code for custom statusline starts
+vim.g.timer_remaining = nil
+
+local function statusline_timer()
+  if vim.g.timer_remaining and vim.g.timer_remaining > 0 then
+    local mins = math.floor(vim.g.timer_remaining / 60)
+    local secs = vim.g.timer_remaining % 60
+    return string.format("[tim=%02d:%02d]", mins, secs)
+  end
+  return ""
+end
+
+_G.statusline_timer = statusline_timer
+
+vim.o.statusline = "[fil=%f][mod=%m]%=%{v:lua.statusline_timer()}[pos=%{strftime('%H:%M:%S')}][%l|%c]"
+vim.o.laststatus = 2
+
+local timer = vim.uv.new_timer()
+timer:start(1000, 1000, vim.schedule_wrap(function()
+  if vim.g.timer_remaining and vim.g.timer_remaining > 0 then
+    vim.g.timer_remaining = vim.g.timer_remaining - 1
+    if vim.g.timer_remaining == 0 then
+      vim.notify("[timer] timer finished", vim.log.levels.ERROR)
+    end
+  end
+  vim.cmd("redrawstatus")
+end))
+
+vim.api.nvim_create_user_command("TimerStart", function(opts)
+  local mins = tonumber(opts.args)
+  if not mins or mins < 1 or mins > 60 then
+    vim.notify("[timer] usage: :TimerStart <1-60>", vim.log.levels.ERROR)
+    return
+  end
+  vim.g.timer_remaining = mins * 60
+  vim.notify(string.format("[timer] started: %d minutes", mins), vim.log.levels.INFO)
+end, { nargs = 1 })
+
+-- Code for custom statusline ends
