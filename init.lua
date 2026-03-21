@@ -161,7 +161,8 @@ local servers = {
   "gopls",
   "rust_analyzer",
   "ts_ls",
-  "tailwindcss"
+  "tailwindcss",
+  "clangd"
 }
 
 vim.lsp.config["lua_ls"] = {
@@ -207,6 +208,12 @@ vim.lsp.config["tailwindcss"] = {
   cmd = { "tailwindcss-language-server", "--stdio" },
   filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
   root_markers = { "tailwind.config.js", "tailwind.config.ts", "tailwind.config.cjs", "tailwind.config.mjs", ".git" },
+}
+
+vim.lsp.config["clangd"] = {
+  cmd = { "clangd", "--background-index", "--clang-tidy" },
+  filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+  root_markers = { "compile_commands.json", "compile_flags.txt", ".clangd", ".git" },
 }
 
 ---@type boolean
