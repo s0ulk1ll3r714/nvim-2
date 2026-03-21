@@ -85,7 +85,9 @@ local filetype_settings = {
   ruby = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   php = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
   markdown = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
-  make = { expandtab = false, shiftwidth = 4, tabstop = 4, softtabstop = 0 },
+  make = { expandtab = false, shiftwidth = 2, tabstop = 2, softtabstop = 2},
+  txt = { expandtab = false, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  cmake = { expandtab = false, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
 }
 
 for filetype, settings in pairs(filetype_settings) do
@@ -162,7 +164,7 @@ local servers = {
   "rust_analyzer",
   "ts_ls",
   "tailwindcss",
-  "clangd"
+  "clangd",
 }
 
 vim.lsp.config["lua_ls"] = {
@@ -258,6 +260,11 @@ mini_completion.setup()
 
 local mini_starter = require("mini.starter")
 mini_starter.setup()
+
+local mini_files = require("mini.files")
+mini_files.setup()
+
+vim.keymap.set("n", "<leader>ff", "<cmd>:lua MiniFiles.open()<cr>", { silent = true })
 
 vim.keymap.set("n", "<leader>sf", "<cmd>Pick files tool='git'<cr>", { silent = true })
 vim.keymap.set("n", "<leader>sg", "<cmd>Pick grep_live<cr>", { silent = true })
