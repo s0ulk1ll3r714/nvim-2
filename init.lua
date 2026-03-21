@@ -249,9 +249,6 @@ mini_pick.setup()
 local mini_extra = require("mini.extra")
 mini_extra.setup()
 
-local mini_statusline = require("mini.statusline")
-mini_statusline.setup()
-
 local mini_comment = require("mini.comment")
 mini_comment.setup()
 
