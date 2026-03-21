@@ -258,9 +258,6 @@ mini_comment.setup()
 local mini_completion = require("mini.completion")
 mini_completion.setup()
 
-local mini_starter = require("mini.starter")
-mini_starter.setup()
-
 local mini_files = require("mini.files")
 mini_files.setup()
 
