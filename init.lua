@@ -85,9 +85,9 @@ local filetype_settings = {
   ruby = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   php = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
   markdown = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
-  make = { expandtab = false, shiftwidth = 2, tabstop = 2, softtabstop = 2},
-  txt = { expandtab = false, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
-  cmake = { expandtab = false, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  make = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2},
+  txt = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  cmake = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
 }
 
 for filetype, settings in pairs(filetype_settings) do
