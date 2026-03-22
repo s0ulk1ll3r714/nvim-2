@@ -165,6 +165,7 @@ local servers = {
   "ts_ls",
   "tailwindcss",
   "clangd",
+  "cmake",
 }
 
 vim.lsp.config["lua_ls"] = {
@@ -216,6 +217,15 @@ vim.lsp.config["clangd"] = {
   cmd = { "clangd", "--background-index", "--clang-tidy" },
   filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
   root_markers = { "compile_commands.json", "compile_flags.txt", ".clangd", ".git" },
+}
+
+vim.lsp.config["cmake"] = {
+  cmd = { "cmake-language-server" },
+  filetypes = { "cmake" },
+  root_markers = { "CMakeLists.txt", "CMakePresets.json", ".git" },
+  init_options = {
+    buildDirectory = "build",
+  },
 }
 
 ---@type boolean
