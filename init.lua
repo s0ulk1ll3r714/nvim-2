@@ -165,7 +165,7 @@ local servers = {
   "ts_ls",
   "tailwindcss",
   "clangd",
-  "cmake",
+  "neocmake",
 }
 
 vim.lsp.config["lua_ls"] = {
@@ -219,12 +219,14 @@ vim.lsp.config["clangd"] = {
   root_markers = { "compile_commands.json", "compile_flags.txt", ".clangd", ".git" },
 }
 
-vim.lsp.config["cmake"] = {
-  cmd = { "cmake-language-server" },
+vim.lsp.config["neocmake"] = {
+  cmd = { "neocmakelsp", "stdio" },
   filetypes = { "cmake" },
-  root_markers = { "CMakeLists.txt", "CMakePresets.json", ".git" },
+  root_markers = { ".neocmake.toml", "CMakeLists.txt", ".git" },
   init_options = {
-    buildDirectory = "build",
+    format = { enable = true },
+    lint = { enable = true },
+    scan_cmake_in_package = true,
   },
 }
 
