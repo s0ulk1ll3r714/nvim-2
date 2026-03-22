@@ -286,7 +286,7 @@ end
 
 _G.statusline_timer = statusline_timer
 
-vim.o.statusline = "[fil=%f][mod=%m]%=%{v:lua.statusline_timer()}[pos=%{strftime('%H:%M:%S')}][%l|%c]"
+vim.o.statusline = "[fil=%f][mod=%m]%=%{v:lua.statusline_timer()}[tim=%{strftime('%H:%M:%S')}][pos=%l|%c]"
 vim.o.laststatus = 2
 
 local timer = vim.uv.new_timer()
