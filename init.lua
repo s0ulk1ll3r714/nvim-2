@@ -61,11 +61,15 @@ local indent_group = vim.api.nvim_create_augroup(
   { clear = true }
 )
 
+
+vim.filetype.add({ extension = { csp = "csp", }, })
+
 local filetype_settings = {
   javascript = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   typescript = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   typescriptreact = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   html = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
+  csp = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   css = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   scss = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   json = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
@@ -85,7 +89,7 @@ local filetype_settings = {
   ruby = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   php = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
   markdown = { expandtab = true, shiftwidth = 4, tabstop = 4, softtabstop = 4 },
-  make = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2},
+  make = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   txt = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
   cmake = { expandtab = true, shiftwidth = 2, tabstop = 2, softtabstop = 2 },
 }
