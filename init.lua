@@ -295,14 +295,14 @@ local function statusline_timer()
   if vim.g.timer_remaining and vim.g.timer_remaining > 0 then
     local mins = math.floor(vim.g.timer_remaining / 60)
     local secs = vim.g.timer_remaining % 60
-    return string.format("[tim=%02d:%02d]", mins, secs)
+    return string.format("%02d:%02d  ", mins, secs)
   end
   return ""
 end
 
 _G.statusline_timer = statusline_timer
 
-vim.o.statusline = "[fil=%f][mod=%m]%=%{v:lua.statusline_timer()}[tim=%{strftime('%H:%M:%S')}][pos=%l|%c]"
+vim.o.statusline = " %<%f%m %=%{v:lua.statusline_timer()}%l:%c  %{strftime('%H:%M:%S')} "
 vim.o.laststatus = 2
 
 local timer = vim.uv.new_timer()
