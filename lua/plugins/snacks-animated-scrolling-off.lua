@@ -4,5 +4,10 @@ return {
 		scroll = {
 			enabled = false, -- Disable scrolling animations
 		},
+    picker = {
+      layout = {
+        preset = "telescope"
+      }
+    }
 	},
 }
