@@ -304,6 +304,9 @@ _G.statusline_timer = statusline_timer
 
 vim.o.statusline = " %<%f%m %=%{v:lua.statusline_timer()}%l:%c  %{strftime('%H:%M:%S')} "
 vim.o.laststatus = 2
+vim.o.cmdheight = 0
+-- Show messages in floating windows so cmdheight=0 never asks to "Press ENTER".
+require("vim._core.ui2").enable({})
 
 local timer = vim.uv.new_timer()
 timer:start(1000, 1000, vim.schedule_wrap(function()
